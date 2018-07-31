@@ -2,10 +2,10 @@ import Foundation
 import ObjectMapper
 
 public class PSSystemToken: Mappable {
-    private var value: String?
-    private var expiresIn: Int?
-    private var scope: String?
-    private var audience: String?
+    public var value: String?
+    public var expiresIn: Int?
+    public var scope: String?
+    public var audience: String?
     
     required public init?(map: Map) {
     }
