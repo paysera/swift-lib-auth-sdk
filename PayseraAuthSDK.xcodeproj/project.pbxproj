@@ -22,7 +22,6 @@
 /* Begin PBXBuildFile section */
 		52D6D9871BEFF229002C0205 /* PayseraAuthSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 52D6D97C1BEFF229002C0205 /* PayseraAuthSDK.framework */; };
 		880FCB92206CB29700350F98 /* PayseraAuthSDK.plist in Resources */ = {isa = PBXBuildFile; fileRef = 880FCB91206CB29700350F98 /* PayseraAuthSDK.plist */; };
-		880FCB9C206CEB0400350F98 /* PSAuthApiError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 880FCB9B206CEB0400350F98 /* PSAuthApiError.swift */; };
 		88774BCD205FE5F700AC5048 /* Cartfile.resolved in Resources */ = {isa = PBXBuildFile; fileRef = 88774BCB205FE5F700AC5048 /* Cartfile.resolved */; };
 		88774BCE205FE5F700AC5048 /* Cartfile in Resources */ = {isa = PBXBuildFile; fileRef = 88774BCC205FE5F700AC5048 /* Cartfile */; };
 		88B25A48206A23EB00BE81C5 /* PSAuthApiClientFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88B25A44206A23EB00BE81C5 /* PSAuthApiClientFactory.swift */; };
@@ -66,7 +65,6 @@
 		52D6D97C1BEFF229002C0205 /* PayseraAuthSDK.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = PayseraAuthSDK.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		52D6D9861BEFF229002C0205 /* PayseraAuthSDK-iOS Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "PayseraAuthSDK-iOS Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		880FCB91206CB29700350F98 /* PayseraAuthSDK.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = PayseraAuthSDK.plist; sourceTree = "<group>"; };
-		880FCB9B206CEB0400350F98 /* PSAuthApiError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PSAuthApiError.swift; sourceTree = "<group>"; };
 		88774BC5205FE5A300AC5048 /* Alamofire.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Alamofire.framework; path = Carthage/Build/iOS/Alamofire.framework; sourceTree = "<group>"; };
 		88774BC6205FE5A300AC5048 /* PromiseKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PromiseKit.framework; path = Carthage/Build/iOS/PromiseKit.framework; sourceTree = "<group>"; };
 		88774BCB205FE5F700AC5048 /* Cartfile.resolved */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Cartfile.resolved; sourceTree = "<group>"; };
@@ -155,7 +153,6 @@
 			isa = PBXGroup;
 			children = (
 				88B25A4E206A302800BE81C5 /* PSAuthApiRequest.swift */,
-				880FCB9B206CEB0400350F98 /* PSAuthApiError.swift */,
 				ED9D0045210F5F30008655A4 /* PSSystemToken.swift */,
 			);
 			path = Entities;
@@ -331,7 +328,6 @@
 				88B25A51206A302800BE81C5 /* PSAuthApiRequest.swift in Sources */,
 				ED9D0048210F6187008655A4 /* PSAuthApiClient.swift in Sources */,
 				ED9D0046210F5F30008655A4 /* PSSystemToken.swift in Sources */,
-				880FCB9C206CEB0400350F98 /* PSAuthApiError.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -82,12 +82,12 @@ public class PSAuthApiClient {
         return Promise.value(body)
     }
     
-    private func mapError(body: Any?) -> PSAuthApiError {
-        if let apiError = Mapper<PSAuthApiError>().map(JSONObject: body) {
+    private func mapError(body: Any?) -> PSApiError {
+        if let apiError = Mapper<PSApiError>().map(JSONObject: body) {
             return apiError
         }
         
-        return PSAuthApiError.unknown()
+        return PSApiError.unknown()
     }
     
     private func createRequest(_ endpoint: PSAuthApiRequestRouter) -> PSAuthApiRequest {
