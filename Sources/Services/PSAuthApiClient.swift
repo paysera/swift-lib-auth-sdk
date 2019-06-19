@@ -2,12 +2,15 @@ import Foundation
 import Alamofire
 import ObjectMapper
 import PromiseKit
+import PayseraCommonSDK
 
 public class PSAuthApiClient {
     private let sessionManager: SessionManager
+    private let logger: PSLoggerProtocol?
     
-    public init(sessionManager: SessionManager) {
+    public init(sessionManager: SessionManager, logger: PSLoggerProtocol? = nil) {
         self.sessionManager = sessionManager
+        self.logger = logger
     }
     
     public func invalidateAuthToken(authToken: String) -> Promise<Any> {
@@ -32,9 +35,18 @@ public class PSAuthApiClient {
     
     // MARK: - Private request methods
     private func makeRequest(apiRequest: PSAuthApiRequest) {
+        self.logger?.log(level: .INFO, message: "--> \(apiRequest.requestEndPoint.urlRequest!.url!.absoluteString)")
+        
         sessionManager
             .request(apiRequest.requestEndPoint)
             .responseJSON { (response) in
+                var logMessage = "<-- \(apiRequest.requestEndPoint.urlRequest!.url!.absoluteString)"
+                if let statusCode = response.response?.statusCode {
+                    logMessage += " (\(statusCode))"
+                }
+                
+                self.logger?.log(level: .INFO, message: logMessage)
+                
                 let responseData = response.result.value
                 
                 guard let statusCode = response.response?.statusCode else {
