@@ -35,7 +35,7 @@ public class PSAuthApiClient {
     
     // MARK: - Private request methods
     private func makeRequest(apiRequest: PSAuthApiRequest) {
-        self.logger?.log(level: .INFO, message: "--> \(apiRequest.requestEndPoint.urlRequest!.url!.absoluteString)")
+        self.logger?.log(level: .DEBUG, message: "--> \(apiRequest.requestEndPoint.urlRequest!.url!.absoluteString)")
         
         sessionManager
             .request(apiRequest.requestEndPoint)
@@ -45,7 +45,6 @@ public class PSAuthApiClient {
                     logMessage += " (\(statusCode))"
                 }
                 
-                self.logger?.log(level: .INFO, message: logMessage)
                 
                 let responseData = response.result.value
                 
@@ -56,8 +55,10 @@ public class PSAuthApiClient {
                 }
                 
                 if statusCode >= 200 && statusCode < 300 {
+                    self.logger?.log(level: .DEBUG, message: logMessage)
                     apiRequest.pendingPromise.resolver.fulfill(responseData as? [String: Any])
                 } else {
+                    self.logger?.log(level: .ERROR, message: logMessage)
                     let error = self.mapError(body: responseData)
                     apiRequest.pendingPromise.resolver.reject(error)
                 }
