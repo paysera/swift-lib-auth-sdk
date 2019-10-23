@@ -33,7 +33,7 @@ class AuthSDKTests: XCTestCase {
         XCTAssertNotNil(expectation)
     }
     
-    func testCreateSystemOptionalToken() {
+    func testCreateSystemTokenOptional() {
         let authToken = ""
         let expectation = XCTestExpectation(description: "Create System Optional Token")
         
@@ -45,6 +45,31 @@ class AuthSDKTests: XCTestCase {
         }
         
         wait(for: [expectation], timeout: 3.0)
+        XCTAssertNotNil(expectation)
+    }
+    
+    func testCreateSystemTokenCollectionOptional() {
+        let authToken = ""
+        let expectation = XCTestExpectation(description: "Create System Optional Token Collection")
+        
+        let first = PSSystemToken()
+        first.audience = "evpbank"
+        first.scope = "logged_in"
+        
+        let second = PSSystemToken()
+        second.audience = "mokejimai"
+        second.scope = "logged_in"
+        
+        let tokens = [first, second]
+        
+        client.createSystemTokenCollectionOptional(authToken: authToken, tokens: tokens)
+            .done { result in
+                print(result)
+            }.catch { error in
+                print(error)
+        }
+        
+        wait(for: [expectation], timeout: 5.0)
         XCTAssertNotNil(expectation)
     }
 }

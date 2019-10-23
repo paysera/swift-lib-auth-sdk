@@ -5,6 +5,7 @@ public enum PSAuthApiRequestRouter: URLRequestConvertible {
     
     case invalidateAuthToken(authToken: String)
     case createSystemTokenOptional(authToken: String, audience: String, scope: String)
+    case createSystemTokenCollectionOptional(authToken: String, tokens: [PSSystemToken])
     
     // MARK: - Declarations
     static var baseURLString = "https://auth-api.paysera.com/authentication/rest/v1"
@@ -12,7 +13,8 @@ public enum PSAuthApiRequestRouter: URLRequestConvertible {
     private var authToken: String {
         switch self {
             case .invalidateAuthToken(let authToken),
-                 .createSystemTokenOptional(let authToken, _, _):
+                 .createSystemTokenOptional(let authToken, _, _),
+                 .createSystemTokenCollectionOptional(let authToken, _):
                 return authToken
             }
         
@@ -24,6 +26,8 @@ public enum PSAuthApiRequestRouter: URLRequestConvertible {
                 return .delete
             case .createSystemTokenOptional(_, _, _):
                 return .post
+            case .createSystemTokenCollectionOptional(_, _):
+                return .post
         }
     }
     
@@ -33,6 +37,8 @@ public enum PSAuthApiRequestRouter: URLRequestConvertible {
                 return "/auth-tokens/current"
             case .createSystemTokenOptional( _, _, _):
                 return "/system-tokens/optional"
+            case .createSystemTokenCollectionOptional( _, _):
+                return "/system-tokens/optional-collection"
         }
     }
     
@@ -52,7 +58,10 @@ public enum PSAuthApiRequestRouter: URLRequestConvertible {
         var urlRequest = URLRequest(url: url.appendingPathComponent(path))
         urlRequest.httpMethod = method.rawValue
         
-        switch self {    
+        switch self {
+            case .createSystemTokenCollectionOptional(_, let tokens):
+                urlRequest = try ArrayEncoding().encode(urlRequest, with: tokens.toJSON().asParameters())
+            
             case (_) where method == .get:
                 urlRequest = try URLEncoding.default.encode(urlRequest, with: parameters)
             

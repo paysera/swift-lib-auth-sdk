@@ -7,6 +7,8 @@ public class PSSystemToken: Mappable {
     public var scope: String?
     public var audience: String?
     
+    public init() {}
+    
     required public init?(map: Map) {
     }
     

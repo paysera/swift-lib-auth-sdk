@@ -33,6 +33,16 @@ public class PSAuthApiClient {
             .then(createPromise)
     }
     
+    public func createSystemTokenCollectionOptional(authToken: String, tokens: [PSSystemToken]) -> Promise<[PSSystemToken]> {
+        let request = createRequest(.createSystemTokenCollectionOptional(authToken: authToken, tokens: tokens))
+        makeRequest(apiRequest: request)
+        
+        return request
+            .pendingPromise
+            .promise
+            .then(createPromiseWithArrayResult)
+    }
+    
     // MARK: - Private request methods
     private func makeRequest(apiRequest: PSAuthApiRequest) {
         self.logger?.log(level: .DEBUG, message: "--> \(apiRequest.requestEndPoint.urlRequest!.url!.absoluteString)")
@@ -56,7 +66,7 @@ public class PSAuthApiClient {
                 
                 if statusCode >= 200 && statusCode < 300 {
                     self.logger?.log(level: .DEBUG, message: logMessage)
-                    apiRequest.pendingPromise.resolver.fulfill(responseData as? [String: Any])
+                    apiRequest.pendingPromise.resolver.fulfill(responseData)
                 } else {
                     self.logger?.log(level: .ERROR, message: logMessage)
                     let error = self.mapError(body: responseData)
