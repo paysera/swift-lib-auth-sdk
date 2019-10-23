@@ -28,6 +28,7 @@
 		88B25A50206A302800BE81C5 /* PSAuthApiRequestRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88B25A4D206A302800BE81C5 /* PSAuthApiRequestRouter.swift */; };
 		88B25A51206A302800BE81C5 /* PSAuthApiRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88B25A4E206A302800BE81C5 /* PSAuthApiRequest.swift */; };
 		8933C7901EB5B82D000D00A4 /* PayseraAuthSDKTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8933C7891EB5B82A000D00A4 /* PayseraAuthSDKTests.swift */; };
+		ED066AA323608AD300A6BFEA /* Alamofire+ArrayEncoding.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED066AA223608AD300A6BFEA /* Alamofire+ArrayEncoding.swift */; };
 		ED50F6BF210F0C85007FE68F /* PayseraAuthSDKTests.plist in Resources */ = {isa = PBXBuildFile; fileRef = ED50F6BE210F0C85007FE68F /* PayseraAuthSDKTests.plist */; };
 		ED753919206A8ADA004EA953 /* JWTDecode.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 88B25A55206A361200BE81C5 /* JWTDecode.framework */; };
 		ED75391A206A8ADA004EA953 /* ObjectMapper.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 88B25A53206A315100BE81C5 /* ObjectMapper.framework */; };
@@ -75,6 +76,7 @@
 		88B25A53206A315100BE81C5 /* ObjectMapper.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ObjectMapper.framework; path = Carthage/Build/iOS/ObjectMapper.framework; sourceTree = "<group>"; };
 		88B25A55206A361200BE81C5 /* JWTDecode.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JWTDecode.framework; path = Carthage/Build/iOS/JWTDecode.framework; sourceTree = "<group>"; };
 		8933C7891EB5B82A000D00A4 /* PayseraAuthSDKTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PayseraAuthSDKTests.swift; sourceTree = "<group>"; };
+		ED066AA223608AD300A6BFEA /* Alamofire+ArrayEncoding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Alamofire+ArrayEncoding.swift"; sourceTree = "<group>"; };
 		ED50F6BE210F0C85007FE68F /* PayseraAuthSDKTests.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = PayseraAuthSDKTests.plist; path = Configs/PayseraAuthSDKTests.plist; sourceTree = SOURCE_ROOT; };
 		ED8FAFFF22BA692000792600 /* PayseraCommonSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PayseraCommonSDK.framework; path = Carthage/Build/iOS/PayseraCommonSDK.framework; sourceTree = "<group>"; };
 		ED9D0045210F5F30008655A4 /* PSSystemToken.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PSSystemToken.swift; sourceTree = "<group>"; };
@@ -170,6 +172,7 @@
 		8933C7811EB5B7E0000D00A4 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				ED066AA123608AC900A6BFEA /* Extensions */,
 				88B25A57206A4C6A00BE81C5 /* Entities */,
 				88B25A5A206A4C9400BE81C5 /* Services */,
 				88B25A4D206A302800BE81C5 /* PSAuthApiRequestRouter.swift */,
@@ -199,6 +202,14 @@
 			children = (
 			);
 			name = Tests;
+			sourceTree = "<group>";
+		};
+		ED066AA123608AC900A6BFEA /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				ED066AA223608AD300A6BFEA /* Alamofire+ArrayEncoding.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -324,6 +335,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				88B25A48206A23EB00BE81C5 /* PSAuthApiClientFactory.swift in Sources */,
+				ED066AA323608AD300A6BFEA /* Alamofire+ArrayEncoding.swift in Sources */,
 				88B25A50206A302800BE81C5 /* PSAuthApiRequestRouter.swift in Sources */,
 				88B25A51206A302800BE81C5 /* PSAuthApiRequest.swift in Sources */,
 				ED9D0048210F6187008655A4 /* PSAuthApiClient.swift in Sources */,
