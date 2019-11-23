@@ -43,6 +43,12 @@ public class PSAuthApiClient {
             .then(createPromiseWithArrayResult)
     }
     
+    public func cancelAllOperations() {
+         sessionManager.session.getAllTasks { tasks in
+             tasks.forEach { $0.cancel() }
+         }
+     }
+    
     // MARK: - Private request methods
     private func makeRequest(apiRequest: PSAuthApiRequest) {
         self.logger?.log(level: .DEBUG, message: "--> \(apiRequest.requestEndPoint.urlRequest!.url!.absoluteString)")
