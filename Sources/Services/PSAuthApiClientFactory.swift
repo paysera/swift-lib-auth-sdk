@@ -4,6 +4,6 @@ import PayseraCommonSDK
 
 public class PSAuthApiClientFactory {
     public static func createAuthApiClient(logger: PSLoggerProtocol? = nil) -> PSAuthApiClient {
-        return PSAuthApiClient(sessionManager: SessionManager(), logger: logger)
+        return PSAuthApiClient(session: Session(), logger: logger)
     }
 }

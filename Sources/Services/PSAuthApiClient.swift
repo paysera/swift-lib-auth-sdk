@@ -5,11 +5,11 @@ import PromiseKit
 import PayseraCommonSDK
 
 public class PSAuthApiClient {
-    private let sessionManager: SessionManager
+    private let session: Session
     private let logger: PSLoggerProtocol?
     
-    public init(sessionManager: SessionManager, logger: PSLoggerProtocol? = nil) {
-        self.sessionManager = sessionManager
+    public init(session: Session, logger: PSLoggerProtocol? = nil) {
+        self.session = session
         self.logger = logger
     }
     
@@ -44,7 +44,7 @@ public class PSAuthApiClient {
     }
     
     public func cancelAllOperations() {
-         sessionManager.session.getAllTasks { tasks in
+         session.session.getAllTasks { tasks in
              tasks.forEach { $0.cancel() }
          }
      }
@@ -53,7 +53,7 @@ public class PSAuthApiClient {
     private func makeRequest(apiRequest: PSAuthApiRequest) {
         self.logger?.log(level: .DEBUG, message: "--> \(apiRequest.requestEndPoint.urlRequest!.url!.absoluteString)")
         
-        sessionManager
+        session
             .request(apiRequest.requestEndPoint)
             .responseJSON { (response) in
                 var logMessage = "<-- \(apiRequest.requestEndPoint.urlRequest!.url!.absoluteString)"
@@ -61,8 +61,7 @@ public class PSAuthApiClient {
                     logMessage += " (\(statusCode))"
                 }
                 
-                
-                let responseData = response.result.value
+                let responseData = try? response.result.get()
                 
                 guard let statusCode = response.response?.statusCode else {
                     let error = self.mapError(body: responseData)
