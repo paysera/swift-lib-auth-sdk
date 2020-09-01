@@ -5,7 +5,7 @@ import PromiseKit
 import JWTDecode
 import ObjectMapper
 
-class AuthSDKTests: XCTestCase {
+class PayseraAuthSDKTests: XCTestCase {
     private var client: PSAuthApiClient!
     
     override func setUp() {

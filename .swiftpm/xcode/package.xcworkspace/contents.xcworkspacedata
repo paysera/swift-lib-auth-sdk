@@ -2,6 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "self:/Users/vytautasgimbutas/Projects/swift-lib-auth-sdk/PayseraAuthSDK.xcodeproj">
+      location = "self:">
    </FileRef>
 </Workspace>
