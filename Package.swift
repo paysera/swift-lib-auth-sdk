@@ -8,7 +8,7 @@ let package = Package(
         .library(name: "PayseraAuthSDK", targets: ["PayseraAuthSDK"]),
     ],
     dependencies: [
-        .package(name: "PayseraCommonSDK", url: "https://github.com/paysera/swift-lib-common-sdk", from: "3.0.0")
+        .package(name: "PayseraCommonSDK", url: "https://github.com/paysera/swift-lib-common-sdk", from: "3.0.1")
     ],
     targets: [
         .target(
