@@ -72,4 +72,19 @@ class PayseraAuthSDKTests: XCTestCase {
         wait(for: [expectation], timeout: 5.0)
         XCTAssertNotNil(expectation)
     }
+    
+    func testCreateSystemTokenScopeChallenge() {
+        let authToken = ""
+        let identifier = ""
+        let expectation = XCTestExpectation(description: "Should create system token using identifier")
+        var response: PSSystemToken?
+        
+        client
+            .createSystemTokenScopeChallenge(authToken: authToken, identifier: identifier)
+            .done { response = $0 }
+            .catch { error in XCTFail(error.localizedDescription) }
+
+        wait(for: [expectation], timeout: 5.0)
+        XCTAssertNotNil(response)
+    }
 }

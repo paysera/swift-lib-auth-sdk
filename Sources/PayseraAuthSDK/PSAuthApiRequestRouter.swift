@@ -6,48 +6,54 @@ public enum PSAuthApiRequestRouter: URLRequestConvertible {
     case invalidateAuthToken(authToken: String)
     case createSystemTokenOptional(authToken: String, audience: String, scope: String)
     case createSystemTokenCollectionOptional(authToken: String, tokens: [PSSystemToken])
+    case createSystemTokenScopeChallenge(authToken: String, identifier: String)
     
     // MARK: - Declarations
     static var baseURLString = "https://auth-api.paysera.com/authentication/rest/v1"
     
     private var authToken: String {
         switch self {
-            case .invalidateAuthToken(let authToken),
-                 .createSystemTokenOptional(let authToken, _, _),
-                 .createSystemTokenCollectionOptional(let authToken, _):
-                return authToken
-            }
+        case .invalidateAuthToken(let authToken),
+             .createSystemTokenOptional(let authToken, _, _),
+             .createSystemTokenCollectionOptional(let authToken, _),
+             .createSystemTokenScopeChallenge(let authToken, _):
+            return authToken
+        }
         
     }
     
     private var method: HTTPMethod {
         switch self {
-            case .invalidateAuthToken( _):
-                return .delete
-            case .createSystemTokenOptional(_, _, _):
-                return .post
-            case .createSystemTokenCollectionOptional(_, _):
-                return .post
+        case .invalidateAuthToken:
+            return .delete
+        case .createSystemTokenOptional,
+             .createSystemTokenCollectionOptional,
+             .createSystemTokenScopeChallenge:
+            return .post
         }
     }
     
     private var path: String {
         switch self {
-            case .invalidateAuthToken( _):
-                return "/auth-tokens/current"
-            case .createSystemTokenOptional( _, _, _):
-                return "/system-tokens/optional"
-            case .createSystemTokenCollectionOptional( _, _):
-                return "/system-tokens/optional-collection"
+        case .invalidateAuthToken:
+            return "/auth-tokens/current"
+        case .createSystemTokenOptional:
+            return "/system-tokens/optional"
+        case .createSystemTokenCollectionOptional:
+            return "/system-tokens/optional-collection"
+        case .createSystemTokenScopeChallenge:
+            return "/system-tokens/scope-challenge"
         }
     }
     
     private var parameters: Parameters? {
         switch self {
-            case .createSystemTokenOptional(_, let audience, let scope):
-                return ["audience": audience, "scope": scope]
-            default:
-                return nil
+        case .createSystemTokenOptional(_, let audience, let scope):
+            return ["audience": audience, "scope": scope]
+        case .createSystemTokenScopeChallenge(_, let identifier):
+            return ["identifier": identifier]
+        default:
+            return nil
         }
     }
     
