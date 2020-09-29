@@ -43,6 +43,16 @@ public class PSAuthApiClient {
             .then(createPromiseWithArrayResult)
     }
     
+    public func createSystemTokenScopeChallenge(authToken: String, identifier: String) -> Promise<PSSystemToken> {
+        let request = createRequest(.createSystemTokenScopeChallenge(authToken: authToken, identifier: identifier))
+        makeRequest(apiRequest: request)
+        
+        return request
+            .pendingPromise
+            .promise
+            .then(createPromise)
+    }
+    
     public func cancelAllOperations() {
          session.session.getAllTasks { tasks in
              tasks.forEach { $0.cancel() }
