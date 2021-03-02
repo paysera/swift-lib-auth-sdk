@@ -1,12 +1,14 @@
-import Foundation
 import Alamofire
-import ObjectMapper
-import PromiseKit
+import Foundation
 import PayseraCommonSDK
+import PromiseKit
+import ObjectMapper
 
 public class PSAuthApiClient {
     private let session: Session
     private let logger: PSLoggerProtocol?
+    
+    private let workQueue = DispatchQueue(label: "\(PSAuthApiClient.self)")
     
     public init(session: Session, logger: PSLoggerProtocol? = nil) {
         self.session = session
@@ -15,78 +17,94 @@ public class PSAuthApiClient {
     
     public func invalidateAuthToken(authToken: String) -> Promise<Any> {
         let request = createRequest(.invalidateAuthToken(authToken: authToken))
-        makeRequest(apiRequest: request)
+        executeRequest(request)
         
         return request
             .pendingPromise
             .promise
-            .then(createPromise)
     }
     
-    public func createSystemTokenOptional(authToken: String, audience: String, scope: String) -> Promise<PSSystemToken> {
-        let request = createRequest(.createSystemTokenOptional(authToken: authToken, audience: audience, scope: scope))
-        makeRequest(apiRequest: request)
+    public func createSystemTokenOptional(
+        authToken: String,
+        audience: String,
+        scope: String
+    ) -> Promise<PSSystemToken> {
+        let request = createRequest(
+            .createSystemTokenOptional(authToken: authToken, audience: audience, scope: scope)
+        )
+        executeRequest(request)
         
         return request
             .pendingPromise
             .promise
-            .then(createPromise)
+            .then(on: workQueue, createPromise)
     }
     
-    public func createSystemTokenCollectionOptional(authToken: String, tokens: [PSSystemToken]) -> Promise<[PSSystemToken]> {
-        let request = createRequest(.createSystemTokenCollectionOptional(authToken: authToken, tokens: tokens))
-        makeRequest(apiRequest: request)
+    public func createSystemTokenCollectionOptional(
+        authToken: String,
+        tokens: [PSSystemToken]
+    ) -> Promise<[PSSystemToken]> {
+        let request = createRequest(
+            .createSystemTokenCollectionOptional(authToken: authToken, tokens: tokens)
+        )
+        executeRequest(request)
         
         return request
             .pendingPromise
             .promise
-            .then(createPromiseWithArrayResult)
+            .then(on: workQueue, createPromiseWithArrayResult)
     }
     
     public func createSystemTokenScopeChallenge(authToken: String, identifier: String) -> Promise<PSSystemToken> {
         let request = createRequest(.createSystemTokenScopeChallenge(authToken: authToken, identifier: identifier))
-        makeRequest(apiRequest: request)
+        executeRequest(request)
         
         return request
             .pendingPromise
             .promise
-            .then(createPromise)
+            .then(on: workQueue, createPromise)
     }
     
     public func cancelAllOperations() {
-         session.session.getAllTasks { tasks in
-             tasks.forEach { $0.cancel() }
-         }
-     }
+        session.cancelAllRequests()
+    }
     
     // MARK: - Private request methods
-    private func makeRequest(apiRequest: PSAuthApiRequest) {
-        self.logger?.log(level: .DEBUG, message: "--> \(apiRequest.requestEndPoint.urlRequest!.url!.absoluteString)")
+    private func executeRequest(_ apiRequest: PSAuthApiRequest) {
+        workQueue.async {
+            self.logger?.log(
+                level: .DEBUG,
+                message: "--> \(apiRequest.requestEndPoint.urlRequest!.url!.absoluteString)"
+            )
+            
+            self.session
+                .request(apiRequest.requestEndPoint)
+                .responseJSON(queue: self.workQueue) { response in
+                    self.handleResponse(response, for: apiRequest)
+                }
+        }
+    }
+    
+    private func handleResponse(
+        _ response: AFDataResponse<Any>,
+        for apiRequest: PSAuthApiRequest
+    ) {
+        let responseData = try? response.result.get()
         
-        session
-            .request(apiRequest.requestEndPoint)
-            .responseJSON { (response) in
-                var logMessage = "<-- \(apiRequest.requestEndPoint.urlRequest!.url!.absoluteString)"
-                if let statusCode = response.response?.statusCode {
-                    logMessage += " (\(statusCode))"
-                }
-                
-                let responseData = try? response.result.get()
-                
-                guard let statusCode = response.response?.statusCode else {
-                    let error = self.mapError(body: responseData)
-                    apiRequest.pendingPromise.resolver.reject(error)
-                    return
-                }
-                
-                if statusCode >= 200 && statusCode < 300 {
-                    self.logger?.log(level: .DEBUG, message: logMessage)
-                    apiRequest.pendingPromise.resolver.fulfill(responseData)
-                } else {
-                    self.logger?.log(level: .ERROR, message: logMessage)
-                    let error = self.mapError(body: responseData)
-                    apiRequest.pendingPromise.resolver.reject(error)
-                }
+        guard let statusCode = response.response?.statusCode else {
+            let error = mapError(body: responseData)
+            return apiRequest.pendingPromise.resolver.reject(error)
+        }
+        
+        let logMessage = "<-- \(apiRequest.requestEndPoint.urlRequest!.url!.absoluteString) (\(statusCode))"
+        
+        if 200 ... 299 ~= statusCode {
+            logger?.log(level: .DEBUG, message: logMessage)
+            apiRequest.pendingPromise.resolver.fulfill(responseData ?? "")
+        } else {
+            logger?.log(level: .ERROR, message: logMessage)
+            let error = mapError(body: responseData)
+            apiRequest.pendingPromise.resolver.reject(error)
         }
     }
     
@@ -104,20 +122,12 @@ public class PSAuthApiClient {
         return Promise.value(object)
     }
     
-    private func createPromise(body: Any) -> Promise<Any> {
-        return Promise.value(body)
-    }
-    
     private func mapError(body: Any?) -> PSApiError {
-        if let apiError = Mapper<PSApiError>().map(JSONObject: body) {
-            return apiError
-        }
-        
-        return PSApiError.unknown()
+        Mapper<PSApiError>().map(JSONObject: body) ?? .unknown()
     }
     
     private func createRequest(_ endpoint: PSAuthApiRequestRouter) -> PSAuthApiRequest {
-        return PSAuthApiRequest(
+        PSAuthApiRequest(
             pendingPromise: Promise<Any>.pending(),
             requestEndPoint: endpoint
         )

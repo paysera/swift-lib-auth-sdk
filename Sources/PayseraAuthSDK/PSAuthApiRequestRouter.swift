@@ -1,5 +1,5 @@
-import Foundation
 import Alamofire
+import Foundation
 
 public enum PSAuthApiRequestRouter: URLRequestConvertible {
     
@@ -9,7 +9,7 @@ public enum PSAuthApiRequestRouter: URLRequestConvertible {
     case createSystemTokenScopeChallenge(authToken: String, identifier: String)
     
     // MARK: - Declarations
-    static var baseURLString = "https://auth-api.paysera.com/authentication/rest/v1"
+    static let baseURL = URL(string: "https://auth-api.paysera.com/authentication/rest/v1")!
     
     private var authToken: String {
         switch self {
@@ -19,7 +19,6 @@ public enum PSAuthApiRequestRouter: URLRequestConvertible {
              .createSystemTokenScopeChallenge(let authToken, _):
             return authToken
         }
-        
     }
     
     private var method: HTTPMethod {
@@ -59,26 +58,20 @@ public enum PSAuthApiRequestRouter: URLRequestConvertible {
     
     // MARK: - Method
     public func asURLRequest() throws -> URLRequest {
-        let url = try! PSAuthApiRequestRouter.baseURLString.asURL()
-        
-        var urlRequest = URLRequest(url: url.appendingPathComponent(path))
-        urlRequest.httpMethod = method.rawValue
+        let url = Self.baseURL.appendingPathComponent(path)
+        var urlRequest = URLRequest(url: url)
+        urlRequest.method = method
         
         switch self {
-            case .createSystemTokenCollectionOptional(_, let tokens):
-                urlRequest = try ArrayEncoding().encode(urlRequest, with: tokens.toJSON().asParameters())
+        case .createSystemTokenCollectionOptional(_, let tokens):
+            urlRequest = try ArrayEncoding().encode(urlRequest, with: tokens.toJSON().asParameters())
+        
+        case _ where method == .post,
+             _ where method == .put:
+            urlRequest = try JSONEncoding.default.encode(urlRequest, with: parameters)
             
-            case (_) where method == .get:
-                urlRequest = try URLEncoding.default.encode(urlRequest, with: parameters)
-            
-            case (_) where method == .post:
-                urlRequest = try JSONEncoding.default.encode(urlRequest, with: parameters)
-            
-            case (_) where method == .put:
-                urlRequest = try JSONEncoding.default.encode(urlRequest, with: parameters)
-            
-            default:
-                urlRequest = try URLEncoding.default.encode(urlRequest, with: parameters)
+        default:
+            urlRequest = try URLEncoding.default.encode(urlRequest, with: parameters)
         }
         
         urlRequest.setValue("Bearer \(authToken)", forHTTPHeaderField: "Authorization")
