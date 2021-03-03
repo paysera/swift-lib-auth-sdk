@@ -1,7 +1,7 @@
 import Alamofire
 import Foundation
 
-public enum PSAuthApiRequestRouter: URLRequestConvertible {
+enum PSAuthApiRequestRouter {
     
     case invalidateAuthToken(authToken: String)
     case createSystemTokenOptional(authToken: String, audience: String, scope: String)
@@ -9,7 +9,7 @@ public enum PSAuthApiRequestRouter: URLRequestConvertible {
     case createSystemTokenScopeChallenge(authToken: String, identifier: String)
     
     // MARK: - Declarations
-    static let baseURL = URL(string: "https://auth-api.paysera.com/authentication/rest/v1")!
+    private static let baseURL = URL(string: "https://auth-api.paysera.com/authentication/rest/v1")!
     
     private var authToken: String {
         switch self {
@@ -55,9 +55,10 @@ public enum PSAuthApiRequestRouter: URLRequestConvertible {
             return nil
         }
     }
-    
-    // MARK: - Method
-    public func asURLRequest() throws -> URLRequest {
+}
+
+extension PSAuthApiRequestRouter: URLRequestConvertible {
+    func asURLRequest() throws -> URLRequest {
         let url = Self.baseURL.appendingPathComponent(path)
         var urlRequest = URLRequest(url: url)
         urlRequest.method = method
