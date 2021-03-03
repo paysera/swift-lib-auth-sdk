@@ -1,9 +1,5 @@
-import Foundation
 import XCTest
 import PayseraAuthSDK
-import PromiseKit
-import JWTDecode
-import ObjectMapper
 
 class PayseraAuthSDKTests: XCTestCase {
     private var client: PSAuthApiClient!
