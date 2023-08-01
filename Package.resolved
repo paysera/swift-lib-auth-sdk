@@ -1,52 +1,50 @@
 {
-  "object": {
-    "pins": [
-      {
-        "package": "Alamofire",
-        "repositoryURL": "https://github.com/Alamofire/Alamofire",
-        "state": {
-          "branch": null,
-          "revision": "d120af1e8638c7da36c8481fd61a66c0c08dc4fc",
-          "version": "5.4.4"
-        }
-      },
-      {
-        "package": "JWTDecode",
-        "repositoryURL": "https://github.com/auth0/JWTDecode.swift",
-        "state": {
-          "branch": null,
-          "revision": "3cd207fb9e943b6168a117baa3936c823204c2dc",
-          "version": "2.6.3"
-        }
-      },
-      {
-        "package": "ObjectMapper",
-        "repositoryURL": "https://github.com/tristanhimmelman/ObjectMapper",
-        "state": {
-          "branch": null,
-          "revision": "0b96a734de3ea1c87374ae677064f86adb0716ec",
-          "version": "4.2.0"
-        }
-      },
-      {
-        "package": "PromiseKit",
-        "repositoryURL": "https://github.com/mxcl/PromiseKit",
-        "state": {
-          "branch": null,
-          "revision": "93c8d41ce96ed78f36c3948be396d76f3ca3de1b",
-          "version": "6.16.2"
-        }
-      },
-      {
-        "package": "PayseraCommonSDK",
-        "repositoryURL": "https://github.com/paysera/swift-lib-common-sdk",
-        "state": {
-          "branch": null,
-          "revision": "db4b6caf2bf8533f75388c625ffa642b3b2518d8",
-          "version": "4.2.2"
-        }
+  "pins" : [
+    {
+      "identity" : "alamofire",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Alamofire/Alamofire",
+      "state" : {
+        "revision" : "d120af1e8638c7da36c8481fd61a66c0c08dc4fc",
+        "version" : "5.4.4"
       }
-    ]
-  },
-  "version": 1
+    },
+    {
+      "identity" : "jwtdecode.swift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/auth0/JWTDecode.swift",
+      "state" : {
+        "revision" : "3cd207fb9e943b6168a117baa3936c823204c2dc",
+        "version" : "2.6.3"
+      }
+    },
+    {
+      "identity" : "objectmapper",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/tristanhimmelman/ObjectMapper",
+      "state" : {
+        "revision" : "0b96a734de3ea1c87374ae677064f86adb0716ec",
+        "version" : "4.2.0"
+      }
+    },
+    {
+      "identity" : "promisekit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/mxcl/PromiseKit",
+      "state" : {
+        "revision" : "93c8d41ce96ed78f36c3948be396d76f3ca3de1b",
+        "version" : "6.16.2"
+      }
+    },
+    {
+      "identity" : "swift-lib-common-sdk",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/paysera/swift-lib-common-sdk",
+      "state" : {
+        "revision" : "27f43fa2eb22c63997bb0950b5c723101189e17b",
+        "version" : "4.3.0"
+      }
+    }
+  ],
+  "version" : 2
 }
